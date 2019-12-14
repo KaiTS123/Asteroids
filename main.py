@@ -1,16 +1,8 @@
 import pygame
 import vectors
+from PlayerShip import PlayerShip
 
-playerShip = {
-    "points": [
-        {"x": 0, "y": -10},
-        {"x": -10, "y": 10},
-        {"x": 10, "y": 10},
-        {"x": 0, "y": -10}
-    ],
-    "position": {"x": 100, "y": 100},
-    "rotation": 0
-}
+playerShip = PlayerShip()
 
 
 def main():
@@ -35,9 +27,16 @@ def main():
         # textSurface = fontArial.render('frame = ' + str(frameCount), False, (255, 255, 255))
         # screen.blit(textSurface, (0, 0))
 
-        playerShip["rotation"] += 0.01
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            playerShip.rotateLeft()
+        if keys[pygame.K_RIGHT]:
+            playerShip.rotateRight()
+        if keys[pygame.K_UP]:
+            playerShip.thrustForward()
 
-        vectors.drawShape(screen, playerShip)
+        playerShip.draw(screen)
+        playerShip.update()
 
         pygame.display.flip()
 
