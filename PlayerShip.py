@@ -1,7 +1,8 @@
-import vectors
+import VectorGrpahics
 from Point import Point
 from Vector import Vector
 import math
+from GameSettings import GameSettings
 
 
 class PlayerShip:
@@ -13,7 +14,7 @@ class PlayerShip:
             Point(-10, 10),
             Point(0, -15)
         ]
-        self.position = Vector(250, 250)
+        self.position = Vector(GameSettings.screenSize["x"] * 0.5, GameSettings.screenSize["y"] * 0.5)
         self.velocity = Vector(0, 0)
         self.acceleration = Vector(0, 0)
         self.rotation = 0
@@ -25,25 +26,20 @@ class PlayerShip:
         self.decelerationAmountTurning = 0.1
 
     def draw(self, screen):
-        vectors.drawShape(screen, self, (100, 100, 255))
+        VectorGrpahics.drawShape(screen, self, (255, 255, 255))
 
     def update(self):
-        self.velocity.x += self.acceleration.x
-        self.velocity.y += self.acceleration.y
+        self.velocity.add(self.acceleration)
         self.rotationSpeed += self.rotationAcceleration
 
-        self.position.x += self.velocity.x
-        self.position.y += self.velocity.y
+        self.position.add(self.velocity)
         self.rotation += self.rotationSpeed
 
         self.acceleration.x = -self.velocity.x * self.decelerationAmount
         self.acceleration.y = -self.velocity.y * self.decelerationAmount
         self.rotationAcceleration = -self.rotationSpeed * self.decelerationAmountTurning
 
-        if self.position.x > 510: self.position.x = -10
-        if self.position.x < -10: self.position.x = 510
-        if self.position.y > 510: self.position.y = -10
-        if self.position.y < -10: self.position.y = 510
+        self.position.wraparound(GameSettings.screenSize["x"], GameSettings.screenSize["y"])
 
     def rotateRight(self):
         self.rotationAcceleration = self.turnStrength
