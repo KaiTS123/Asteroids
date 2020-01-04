@@ -3,6 +3,7 @@ from Point import Point
 from Vector import Vector
 import math
 from GameSettings import GameSettings
+from PlayerBullet import PlayerBullet
 
 
 class PlayerShip:
@@ -19,6 +20,10 @@ class PlayerShip:
         self.acceleration = Vector(0, 0)
         self.rotation = 0
         self.rotationSpeed = 0
+        self.bullets = []
+        self.time_since_shot = 10
+
+        self.shooting_timeout = 10
         self.rotationAcceleration = 0
         self.thrustStrength = 0.12
         self.turnStrength = 0.005
@@ -27,6 +32,7 @@ class PlayerShip:
 
     def draw(self, screen):
         VectorShapes.drawShape(screen, self, (255, 255, 255))
+        self.drawBullets(screen)
 
     def update(self):
         self.velocity.add(self.acceleration)
@@ -38,6 +44,9 @@ class PlayerShip:
         self.acceleration.x = -self.velocity.x * self.decelerationAmount
         self.acceleration.y = -self.velocity.y * self.decelerationAmount
         self.rotationAcceleration = -self.rotationSpeed * self.decelerationAmountTurning
+
+        self.updateBullets()
+        self.time_since_shot += 1
 
         self.position.wraparound(GameSettings.screenSize["x"], GameSettings.screenSize["y"])
 
@@ -57,3 +66,20 @@ class PlayerShip:
         self.acceleration = Vector(0, 0)
         self.rotation = 0
         self.rotationSpeed = 0
+        self.bullets = []
+
+    def shootBullet(self):
+        if self.time_since_shot > self.shooting_timeout:
+            bullet = PlayerBullet(self.position, self.rotation, self.velocity)
+            self.bullets.append(bullet)
+            self.time_since_shot = 0
+
+    def updateBullets(self):
+        for bullet in self.bullets:
+            bullet.move()
+            if bullet.life >= PlayerBullet.lifespan:
+                self.bullets.remove(bullet)
+
+    def drawBullets(self, screen):
+        for bullet in self.bullets:
+            bullet.draw(screen)

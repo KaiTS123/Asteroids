@@ -14,6 +14,8 @@ def checkInput(playerShip):
         playerShip.rotateRight()
     if keys[pygame.K_UP]:
         playerShip.thrustForward()
+    if keys[pygame.K_SPACE]:
+        playerShip.shootBullet()
 
 
 def generateAsteroids(asteroids):

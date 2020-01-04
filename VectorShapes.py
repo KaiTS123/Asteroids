@@ -4,6 +4,7 @@ import math
 
 from Point import Point
 from Line import Line
+from Vector import Vector
 
 
 def drawShape(screen, shape, color):
