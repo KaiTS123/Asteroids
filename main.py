@@ -65,6 +65,9 @@ def main():
         for index, asteroid in enumerate(asteroids):
             if VectorShapes.shapesColliding(asteroid, playerShip):
                 playerShip.reset()
+            for bullet in playerShip.bullets:
+                if VectorShapes.pointWithinShape(bullet.position, asteroid):
+                    asteroids.remove(asteroid)
             asteroid.move()
             asteroid.draw(screen)
 

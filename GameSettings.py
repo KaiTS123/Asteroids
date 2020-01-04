@@ -6,4 +6,4 @@ class GameSettings:
 
     running = True
 
-    num_asteroids = 4
+    num_asteroids = 10

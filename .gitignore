@@ -1,0 +1,7 @@
+
+*.iml
+*.h
+*.pth
+*.txt
+*.xml
+/venv/
