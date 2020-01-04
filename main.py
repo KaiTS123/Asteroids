@@ -1,10 +1,8 @@
 import pygame
-import VectorGrpahics
+import VectorShapes
 from PlayerShip import PlayerShip
-import Asteroid
+from Asteroid import Asteroid
 from GameSettings import GameSettings
-
-playerShip = PlayerShip()
 
 
 def checkInput(playerShip):
@@ -18,7 +16,19 @@ def checkInput(playerShip):
         playerShip.thrustForward()
 
 
+def generateAsteroids(asteroids):
+    asteroids.clear()
+    for i in range(0, GameSettings.num_asteroids):
+        asteroids.append(Asteroid())
+
+
 def main():
+    # game data
+    playerShip = PlayerShip()
+
+    asteroids = []
+    generateAsteroids(asteroids)
+
     # initialise pygame
     pygame.init()
     pygame.display.set_caption("Asteroids")
@@ -31,8 +41,6 @@ def main():
     GameSettings.running = True
 
     frameCount = 0
-
-    asteroid = Asteroid.Asteroid()
 
     # main loop
     while GameSettings.running:
@@ -52,8 +60,11 @@ def main():
         playerShip.draw(screen)
         playerShip.update()
 
-        asteroid.draw(screen)
-        asteroid.move()
+        for index, asteroid in enumerate(asteroids):
+            if VectorShapes.shapesColliding(asteroid, playerShip):
+                playerShip.reset()
+            asteroid.move()
+            asteroid.draw(screen)
 
         pygame.display.flip()
 

@@ -1,4 +1,4 @@
-import VectorGrpahics
+import VectorShapes
 from Point import Point
 from Vector import Vector
 import math
@@ -26,7 +26,7 @@ class PlayerShip:
         self.decelerationAmountTurning = 0.1
 
     def draw(self, screen):
-        VectorGrpahics.drawShape(screen, self, (255, 255, 255))
+        VectorShapes.drawShape(screen, self, (255, 255, 255))
 
     def update(self):
         self.velocity.add(self.acceleration)
@@ -50,3 +50,10 @@ class PlayerShip:
     def thrustForward(self):
         self.acceleration.x = self.thrustStrength * math.sin(self.rotation)
         self.acceleration.y = self.thrustStrength * -math.cos(self.rotation)
+
+    def reset(self):
+        self.position = Vector(GameSettings.screenSize["x"] * 0.5, GameSettings.screenSize["y"] * 0.5)
+        self.velocity = Vector(0, 0)
+        self.acceleration = Vector(0, 0)
+        self.rotation = 0
+        self.rotationSpeed = 0

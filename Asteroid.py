@@ -5,9 +5,10 @@ import random
 from typing import List
 
 # internal libraries
-import VectorGrpahics
+import VectorShapes
 from Point import Point
 from Vector import Vector
+from GameSettings import GameSettings
 
 
 class Asteroid:
@@ -35,9 +36,9 @@ class Asteroid:
 
         # setup initial position and rotation
         if random.randint(0, 1) == 0:
-            self.position = Vector(random.randint(0, 500), 0)
+            self.position = Vector(random.randint(0, GameSettings.screenSize["x"]), 0)
         else:
-            self.position = Vector(0, random.randint(0, 500))
+            self.position = Vector(0, random.randint(0, GameSettings.screenSize["y"]))
 
         self.rotation = 0.0
         velocity_angle = random.uniform(0, math.pi * 2)
@@ -54,8 +55,8 @@ class Asteroid:
 
     def move(self):
         self.position.add(self.velocity)
-        self.position.wraparound(500, 500)
+        self.position.wraparound(GameSettings.screenSize["x"], GameSettings.screenSize["y"])
         self.rotate()
 
     def draw(self, screen):
-        VectorGrpahics.drawShape(screen, self, self.color)
+        VectorShapes.drawShape(screen, self, self.color)
